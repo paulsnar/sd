@@ -1,0 +1,58 @@
+;; 4-state busy beaver (http://morphett.info/turing/turing.html)
+;; Represents the Turing tape as the initial 24 slots of the stack,
+;; and the cursor (index) as the top item at most times.
+;; Returns the tape and the top index, reversed.
+;;
+;; Using the Morphett syntax:
+;;
+;;;state  read  write  move  next-state
+;;;------------------------------------
+;;   A     1      1     <-       B
+;;   A     0      1     ->       B
+;;   B     1      0     <-       C
+;;   B     0      1     <-       A
+;;   C     1      1     <-       D
+;;   C     0      1     ->      halt
+;;   D     1      0     ->       A
+;;   D     0      1     ->       D
+
+{
+  { 1 s B j } T f
+  { w 1 y 1 a B j } F f
+  w x T F k
+} A f
+{
+  { w 0 y 1 s C j } T f
+  { w 1 y 1 s A j } F f
+  w x T F k
+} B f
+{
+  { 1 s D j } T f
+  { w 1 y 1 a Z j } F f
+  w x T F k
+} C f
+{
+  { w 0 y 1 a A j } T f
+  { w 1 y 1 a D j } F f
+  w x T F k
+} D f
+
+;; [...] Z
+;;  Print the contents of the stack, then halt
+{
+  r q
+  z Z 1 k
+} Z f
+
+;; item length Y
+;;  Create an `length` string of copies of `item` on top of stack
+{
+  t q ; x
+  w   ; x x
+  0 t ; x x n
+  1 s ; x x n-1
+  w Y 1 k
+} Y f
+
+4 6 m 0 e Y c ;; create a 24-long stack of zeroes
+4 3 m A j     ;; jump into first state
