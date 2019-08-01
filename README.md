@@ -8,7 +8,7 @@ Seems Turing-complete, but don't quote me on that.
 
 The language itself consists of single letter "commands" which are executed in
 order. The memory model is similar to WebAssembly, i.e., there's no
-homoiconity.
+homoiconicity.
 
 All the commands are listed below:
 
